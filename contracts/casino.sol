@@ -1,5 +1,5 @@
 pragma solidity 0.4.24;
-import "github.com/oraclize/ethereum-api/oraclizeAPI.sol";
+import "github.com/oraclize/ethereum-api/oraclizeAPI.sol"; //go to https://github.com/merlox/casino-ethereum to check out secure number generation
 
 /// @title Contract to bet Ether for a number and win randomly when the number of bets is met.
 /// @author Merunas Grincalaitis
@@ -13,7 +13,7 @@ contract Casino is usingOracalize {
     uint256 public minimumBet = 100 finney;
 
     //total ether bet for a current game
-    uint256 public totalBet;
+    uint256 public totalBet = 0;
 
     //total number of bets made by users
     uint256 public numberOfBets;
@@ -59,7 +59,7 @@ contract Casino is usingOracalize {
             }               
         }
         for (uint256 j = 0; j <= winners.length; ++j){
-            if(winners[j] != address(0))
+            if(winners[j] != address(0)) //check that address is not empty
                 winners[j].transfer(totalBet / winners.length);
         }
     }
@@ -68,7 +68,7 @@ contract Casino is usingOracalize {
     function generateNumberWinner() public {
         //takes current block number, modulo it by 10, add 1
         //ex current block is 128142 % 10 = 2 + 1 = 3
-        uint256 numberGenerated = block.number % 10 + 1; // not secure
+        uint256 numberGenerated = block.number % 10 + 1; // not secure, easy to cheat
         distributePrizes(numberGenerated);
     }
 
@@ -84,7 +84,9 @@ contract Casino is usingOracalize {
         if (numberOfBets >= maxAmountOfBets) generateNumberWinner();
     }
 
-
+    /*Fallback function in case someone sends ether to the contract
+    so it doesn't get lost and to increase the treasury of this contract*/
+    function () public payable {}
 
     function kill() public {
         if (msg.sender == owner) selfdestruct(owner);
