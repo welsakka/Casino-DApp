@@ -5,7 +5,7 @@ pragma solidity 0.4.24;
 /// @title Contract to bet Ether for a number and win randomly when the number of bets is met.
 /// @author Merunas Grincalaitis
 
-contract Casino {
+contract casino {
 
     //owner address
     address public owner;
