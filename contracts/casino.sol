@@ -1,10 +1,11 @@
 pragma solidity 0.4.24;
-import "github.com/oraclize/ethereum-api/oraclizeAPI.sol"; //go to https://github.com/merlox/casino-ethereum to check out secure number generation
+
+//go to https://github.com/merlox/casino-ethereum to check out secure number generation
 
 /// @title Contract to bet Ether for a number and win randomly when the number of bets is met.
 /// @author Merunas Grincalaitis
 
-contract Casino is usingOracalize {
+contract Casino {
 
     //owner address
     address public owner;
@@ -33,7 +34,7 @@ contract Casino is usingOracalize {
     //info associated with a particular address
     mapping(address => Player) public playerInfo;
 
-    constructor (uint256 _minimumBet, uint256 _maxAmountOfBets) public{
+    constructor (uint256 _minimumBet) public{
         owner = msg.sender;
 
         if (_minimumBet > 0)
@@ -79,7 +80,7 @@ contract Casino is usingOracalize {
         playerInfo[msg.sender].amountBet = msg.value;
         playerInfo[msg.sender].numberSelected = _numberSelected;
         numberOfBets++;
-        players.push[msg.sender];
+        players.push(msg.sender);
         totalBet += msg.value;
         if (numberOfBets >= maxAmountOfBets) generateNumberWinner();
     }
