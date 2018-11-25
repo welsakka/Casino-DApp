@@ -11,13 +11,13 @@ contract casino {
     address public owner;
 
     //minimum allowed bet
-    uint256 public minimumBet;
+    uint256 public minimumBet = 100 finney;
 
     //total ether bet for a current game
     uint256 public totalBet;
 
     //total number of bets made by users
-    uint256 public numberOfBets;
+    uint256 public numberOfBets = 0;
 
     //MAX allowed bets to be made; to reduce gas consumption when distributing prize
     uint256 public maxAmountOfBets = 100;
@@ -34,14 +34,15 @@ contract casino {
     //info associated with a particular address
     mapping(address => Player) public playerInfo;
 
-   constructor(uint256 _minimumBet) public {
-      owner = msg.sender;
-      if(_minimumBet != 0 ) minimumBet = _minimumBet;
-   }
+    constructor(uint256 _minimumBet) public {
+        owner = msg.sender;
+
+        if(_minimumBet != 0 ) minimumBet = _minimumBet;
+    }
 
     //Checks if an address is listed in the players array
-    function checkPlayerExists(address player) public view returns(bool){
-        for (uint256 i = 0; i <= players.length; i++){
+    function checkPlayerExists(address player) public constant returns(bool){
+        for (uint256 i = 0; i < players.length; i++){
             if (players[i] == player) return true;
         }   
         return false;
