@@ -1,4 +1,4 @@
-pragma solidity 0.4.24;
+pragma solidity ^0.4.24;
 
 //go to https://github.com/merlox/casino-ethereum to check out secure number generation
 
@@ -11,10 +11,10 @@ contract casino {
     address public owner;
 
     //minimum allowed bet
-    uint256 public minimumBet = 100 finney;
+    uint256 public minimumBet;
 
     //total ether bet for a current game
-    uint256 public totalBet = 0;
+    uint256 public totalBet;
 
     //total number of bets made by users
     uint256 public numberOfBets;
@@ -34,20 +34,17 @@ contract casino {
     //info associated with a particular address
     mapping(address => Player) public playerInfo;
 
-    constructor (uint256 _minimumBet) public{
-        owner = msg.sender;
-
-        if (_minimumBet > 0)
-            _minimumBet = minimumBet;
-    }
+   constructor(uint256 _minimumBet) public {
+      owner = msg.sender;
+      if(_minimumBet != 0 ) minimumBet = _minimumBet;
+   }
 
     //Checks if an address is listed in the players array
     function checkPlayerExists(address player) public view returns(bool){
-        for (uint256 i = 0; i <= players.length; ++i){
+        for (uint256 i = 0; i <= players.length; i++){
             if (players[i] == player) return true;
-            else
-                return false;
-        }        
+        }   
+        return false;
     }
 
     function distributePrizes(uint256 _numberGenerated) public {
