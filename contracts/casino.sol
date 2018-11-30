@@ -20,7 +20,7 @@ contract casino {
     uint256 public numberOfBets = 0;
 
     //MAX allowed bets to be made; to reduce gas consumption when distributing prize
-    uint256 public maxAmountOfBets = 100;
+    uint256 public maxAmountOfBets = 3;
 
     //array of addresses so we may iterate
     address[] public players;
@@ -41,7 +41,7 @@ contract casino {
     }
 
     //Checks if an address is listed in the players array
-    function checkPlayerExists(address player) public constant returns(bool){
+    function checkPlayerExists(address player) public view returns(bool){
         for (uint256 i = 0; i < players.length; i++){
             if (players[i] == player) return true;
         }   
@@ -51,16 +51,18 @@ contract casino {
     function distributePrizes(uint256 _numberGenerated) public {
         address[100] memory winners; //temp array to store winner addresses
         uint256 counter = 0; //counter variable for winner array
-        for (uint256 i = 0; i <= players.length; ++i){
+        for (uint256 i = 0; i < players.length; ++i){
             if (playerInfo[players[i]].numberSelected == _numberGenerated) {
                 winners[counter] = players[i];
                 ++counter; 
             }               
         }
-        for (uint256 j = 0; j <= winners.length; ++j){
+        for (uint256 j = 0; j < winners.length; ++j){
             if(winners[j] != address(0)) //check that address is not empty
                 winners[j].transfer(totalBet / winners.length);
         }
+        
+        resetData();
     }
 
     //generate a random number between 1 and 10, inclusive 
@@ -71,7 +73,7 @@ contract casino {
         distributePrizes(numberGenerated);
     }
 
-    function makeBet(uint256 _numberSelected) public payable {
+    function bet(uint256 _numberSelected) public payable {
         require(!checkPlayerExists(msg.sender));
         require(_numberSelected >= 1 && _numberSelected <= 10);
         require(msg.value >= minimumBet);
@@ -82,7 +84,13 @@ contract casino {
         totalBet += msg.value;
         if (numberOfBets >= maxAmountOfBets) generateNumberWinner();
     }
-
+    
+    function resetData() public {
+        players.length = 0; // Delete all the players array
+        totalBet = 0;
+        numberOfBets = 0;
+    }
+    
     /*Fallback function in case someone sends ether to the contract
     so it doesn't get lost and to increase the treasury of this contract*/
     function () public payable {}
@@ -90,4 +98,5 @@ contract casino {
     function kill() public {
         if (msg.sender == owner) selfdestruct(owner);
     }
+    
 }
