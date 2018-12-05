@@ -14,9 +14,6 @@ class App extends React.Component {
          totalBet: 0,
          maxAmountOfBets: 0,
       }
-
-      var Web3 = require('web3');
-      var web3 = new Web3();
       
       if (typeof web3 !== 'undefined') {
          App.web3Provider = web3.currentProvider;
@@ -26,8 +23,210 @@ class App extends React.Component {
          App.web3Provider = new web3.providers.HttpProvider('http://127.0.0.1:7545');
          web3 = new Web3(App.web3Provider);
        }
-      const MyContract = web3.eth.contract()
-
+      const MyContract = web3.eth.contract([
+         {
+           "constant": true,
+           "inputs": [],
+           "name": "numberOfBets",
+           "outputs": [
+             {
+               "name": "",
+               "type": "uint256"
+             }
+           ],
+           "payable": false,
+           "stateMutability": "view",
+           "type": "function"
+         },
+         {
+           "constant": true,
+           "inputs": [
+             {
+               "name": "",
+               "type": "address"
+             }
+           ],
+           "name": "playerInfo",
+           "outputs": [
+             {
+               "name": "amountBet",
+               "type": "uint256"
+             },
+             {
+               "name": "numberSelected",
+               "type": "uint256"
+             }
+           ],
+           "payable": false,
+           "stateMutability": "view",
+           "type": "function"
+         },
+         {
+           "constant": true,
+           "inputs": [],
+           "name": "owner",
+           "outputs": [
+             {
+               "name": "",
+               "type": "address"
+             }
+           ],
+           "payable": false,
+           "stateMutability": "view",
+           "type": "function"
+         },
+         {
+           "constant": true,
+           "inputs": [],
+           "name": "minimumBet",
+           "outputs": [
+             {
+               "name": "",
+               "type": "uint256"
+             }
+           ],
+           "payable": false,
+           "stateMutability": "view",
+           "type": "function"
+         },
+         {
+           "constant": true,
+           "inputs": [],
+           "name": "maxAmountOfBets",
+           "outputs": [
+             {
+               "name": "",
+               "type": "uint256"
+             }
+           ],
+           "payable": false,
+           "stateMutability": "view",
+           "type": "function"
+         },
+         {
+           "constant": true,
+           "inputs": [
+             {
+               "name": "",
+               "type": "uint256"
+             }
+           ],
+           "name": "players",
+           "outputs": [
+             {
+               "name": "",
+               "type": "address"
+             }
+           ],
+           "payable": false,
+           "stateMutability": "view",
+           "type": "function"
+         },
+         {
+           "constant": true,
+           "inputs": [],
+           "name": "totalBet",
+           "outputs": [
+             {
+               "name": "",
+               "type": "uint256"
+             }
+           ],
+           "payable": false,
+           "stateMutability": "view",
+           "type": "function"
+         },
+         {
+           "inputs": [
+             {
+               "name": "_minimumBet",
+               "type": "uint256"
+             }
+           ],
+           "payable": false,
+           "stateMutability": "nonpayable",
+           "type": "constructor"
+         },
+         {
+           "payable": true,
+           "stateMutability": "payable",
+           "type": "fallback"
+         },
+         {
+           "constant": true,
+           "inputs": [
+             {
+               "name": "player",
+               "type": "address"
+             }
+           ],
+           "name": "checkPlayerExists",
+           "outputs": [
+             {
+               "name": "",
+               "type": "bool"
+             }
+           ],
+           "payable": false,
+           "stateMutability": "view",
+           "type": "function"
+         },
+         {
+           "constant": false,
+           "inputs": [
+             {
+               "name": "_numberGenerated",
+               "type": "uint256"
+             }
+           ],
+           "name": "distributePrizes",
+           "outputs": [],
+           "payable": false,
+           "stateMutability": "nonpayable",
+           "type": "function"
+         },
+         {
+           "constant": false,
+           "inputs": [],
+           "name": "generateNumberWinner",
+           "outputs": [],
+           "payable": false,
+           "stateMutability": "nonpayable",
+           "type": "function"
+         },
+         {
+           "constant": false,
+           "inputs": [
+             {
+               "name": "_numberSelected",
+               "type": "uint256"
+             }
+           ],
+           "name": "bet",
+           "outputs": [],
+           "payable": true,
+           "stateMutability": "payable",
+           "type": "function"
+         },
+         {
+           "constant": false,
+           "inputs": [],
+           "name": "resetData",
+           "outputs": [],
+           "payable": false,
+           "stateMutability": "nonpayable",
+           "type": "function"
+         },
+         {
+           "constant": false,
+           "inputs": [],
+           "name": "kill",
+           "outputs": [],
+           "payable": false,
+           "stateMutability": "nonpayable",
+           "type": "function"
+         }
+       ])
       this.state.ContractInstance = MyContract.at("0x7C2b54c495d053ef20BB082DB74Cbd9d59689C8D")
    }
 
